@@ -1,6 +1,6 @@
 # Prompts
 
-One prompt per phase, ready to paste. Each assumes the agent is working in this repo and can read `planning/claude/plan.md`.
+One prompt per phase, ready to paste. Each assumes the agent is working in this repo and can read `planning/claude/racing-bsp/plan.md`.
 
 ## How to run the sessions
 
@@ -17,7 +17,7 @@ Put this at the repo root in Phase 0. Codex reads `AGENTS.md`; use the same text
 # betfair-bot
 
 Research and execution code for a horse racing strategy that bets at Betfair Starting Price.
-The plan is in planning/claude/plan.md. Follow the phase you are asked to work on and no other.
+The plan is in planning/claude/racing-bsp/plan.md. Follow the phase you are asked to work on and no other.
 
 ## Rules that are never broken
 
@@ -45,12 +45,12 @@ The plan is in planning/claude/plan.md. Follow the phase you are asked to work o
 ## Phase 0: repo, rules and data splits
 
 ```text
-Set up this repo for Phase 0 of planning/claude/plan.md.
+Set up this repo for Phase 0 of planning/claude/racing-bsp/plan.md.
 
 Create a Python 3.12 project managed with uv, with ruff and pytest configured. Create the
 directory layout the plan describes, a .gitignore that excludes data/, .env, and any key or
 certificate files, and config/splits.toml with the split dates from the plan. Put the
-"Proposed CLAUDE.md" text from planning/claude/prompts.md at the repo root as CLAUDE.md and
+"Proposed CLAUDE.md" text from planning/claude/racing-bsp/prompts.md at the repo root as CLAUDE.md and
 as AGENTS.md.
 
 Done means: a fresh clone can be set up with one documented command, `uv run pytest` passes,
@@ -60,7 +60,7 @@ and the README explains the layout in under 30 lines. Do not write any data or s
 ## Phase 1: ingest the BSP archive
 
 ```text
-Build Phase 1 of planning/claude/plan.md: ingest of the Betfair BSP price files.
+Build Phase 1 of planning/claude/racing-bsp/plan.md: ingest of the Betfair BSP price files.
 
 Start by fetching the directory listing at promo.betfair.com/betfairsp/prices and three or
 four sample files from different years, and tell me the file naming scheme, the columns, the
@@ -82,7 +82,7 @@ parser on the sample files, and the downloader has a test proving it refuses hol
 ## Phase 2: evaluation harness
 
 ```text
-Build Phase 2 of planning/claude/plan.md: the evaluation harness. This code will be frozen
+Build Phase 2 of planning/claude/racing-bsp/plan.md: the evaluation harness. This code will be frozen
 after review, so correctness matters more than speed or elegance.
 
 Implement the cost model exactly as the plan states it, including commission charged on net
@@ -103,7 +103,7 @@ Review prompt for the other model:
 
 ```text
 Review the evaluation harness in this repo against the cost model and Phase 2 in
-planning/claude/plan.md. You are looking for ways it could overstate returns: wrong commission
+planning/claude/racing-bsp/plan.md. You are looking for ways it could overstate returns: wrong commission
 netting, bets counted that would not be matched, results leaking into bet selection, the
 bootstrap resampling bets instead of race days, or any path that skips the trial log.
 For each finding give the file and line, a concrete input that triggers it, and the wrong
@@ -113,7 +113,7 @@ output. Do not fix anything.
 ## Phase 3: baseline
 
 ```text
-Run Phase 3 of planning/claude/plan.md using the frozen harness.
+Run Phase 3 of planning/claude/racing-bsp/plan.md using the frozen harness.
 
 Register it as hypothesis H-000 "back every runner at BSP" first. Produce the baseline report
 on train and validation: returns before and after commission overall and by odds band, year,
@@ -127,7 +127,7 @@ bug in ingest or settlement.
 ## Phase 4: price-only hypotheses
 
 ```text
-We are in Phase 4 of planning/claude/plan.md. Read reports/ for the baseline first.
+We are in Phase 4 of planning/claude/racing-bsp/plan.md. Read reports/ for the baseline first.
 
 Propose five hypotheses about mispricing at BSP that use only fields the plan lists as known
 before the off. For each, write a file in registry/hypotheses/ using the template in the plan,
@@ -149,7 +149,7 @@ maximum variants stated in each hypothesis file.
 Before prompting, subscribe to the form data source and note what its terms allow.
 
 ```text
-We are in Phase 5 of planning/claude/plan.md. The form data is at <path> and its terms allow
+We are in Phase 5 of planning/claude/racing-bsp/plan.md. The form data is at <path> and its terms allow
 <what you may do with it>.
 
 Step 1 only for now: match runners in the form data to the BSP archive by date, course, off
@@ -177,7 +177,7 @@ Leakage audit prompt for the other model:
 
 ```text
 Audit this repo's feature pipeline and model for look-ahead. The rule is in
-planning/claude/plan.md under "When each archive field is known". Check every feature's
+planning/claude/racing-bsp/plan.md under "When each archive field is known". Check every feature's
 availability time, every join, every normalisation and every train or validation boundary.
 Then take 50 bets at random from the latest bet log and, for each, verify by hand from the
 raw files that every input was known before that race. Report each problem with file, line
@@ -198,7 +198,7 @@ parameter or threshold, and do not run anything a second time.
 ## Phase 7: execution bot and safety layer
 
 ```text
-Build Phase 7 of planning/claude/plan.md. Before writing code, read the current Betfair API
+Build Phase 7 of planning/claude/racing-bsp/plan.md. Before writing code, read the current Betfair API
 documentation and tell me, with links: the exact behaviour of LIMIT_ON_CLOSE back bets, the
 minimum stake and liability for BSP bets in GBP, what the delayed application key can and
 cannot do, and how commission is reported on cleared orders. Flag anything that differs from
